@@ -1,68 +1,19 @@
-import math
-import random
-from heapq import heappush, heappop
-from datetime import datetime
-import os
 import time
-
-def euclidean(a, b):
-  
-    return math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
-
-def astar(grid, start, goal, weather_factor):
-
-    rows, cols = len(grid), len(grid[0])
-    open_set = []
-    heappush(open_set, (euclidean(start, goal), 0, start, [start]))
-    visited = set()
-
-    while open_set:
-        f, g, current, path = heappop(open_set)
-        if current == goal:
-            return path, g
-        if current in visited:
-            continue
-        visited.add(current)
-        x, y = current
-        for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
-            nx, ny = x+dx, y+dy
-            if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == 0:
-                new_g = g + 1 * weather_factor
-                new_f = new_g + euclidean((nx, ny), goal)
-                heappush(open_set, (new_f, new_g, (nx, ny), path + [(nx, ny)]))
-    return None, None
-
-
-def print_grid(grid):
-    os.system('clear' if os.name != 'nt' else 'cls')
-    print("\n CURRENT CITY MAP\n")
-    for row in grid:
-        print(" ".join(str(c) for c in row))
-
+from datetime import datetime
+from astar import astar
+from grid import generate_grid, place_special_points, print_grid
 
 def main():
     print("\n SMART AMBULANCE A* SIMULATOR (Dynamic Edition) \n")
     rows = int(input("Enter grid rows (e.g. 6): "))
     cols = int(input("Enter grid columns (e.g. 6): "))
-
-    
-    grid = [[0 for _ in range(cols)] for _ in range(rows)]
-
-  
-    obstacle_count = (rows * cols) // 5
-    obstacles = set()
-    while len(obstacles) < obstacle_count:
-        x, y = random.randint(0, rows - 1), random.randint(0, cols - 1)
-        obstacles.add((x, y))
-    for (x, y) in obstacles:
-        grid[x][y] = 1
+    grid = generate_grid(rows, cols)
 
     sx, sy = map(int, input("\nEnter Ambulance Start (x y): ").split())
     gx, gy = map(int, input("Enter Hospital Destination (x y): ").split())
     start = (sx, sy)
     goal = (gx, gy)
 
-  
     print("\nChoose Weather Condition:")
     print("1. Normal\n2. Rain\n3. Fog\n4. Storm")
     choice = int(input("Enter choice (1-4): "))
@@ -74,16 +25,9 @@ def main():
     }
     weather, factor = weather_conditions.get(choice, ("Normal", 1.0))
 
-  
-    doctor = (0, cols - 2)
-    police = (rows - 1, 1)
-    if grid[doctor[0]][doctor[1]] == 0:
-        grid[doctor[0]][doctor[1]] = "D"
-    if grid[police[0]][police[1]] == 0:
-        grid[police[0]][police[1]] = "P"
+    grid = place_special_points(grid)
 
     while True:
-      
         temp_grid = [[0 if c == "*" else c for c in row] for row in grid]
         path, cost = astar(temp_grid, start, goal, factor)
 
@@ -101,7 +45,6 @@ def main():
             print_grid(grid)
             print("\n No route found! Obstacles may block all paths.")
 
-       
         print("\nActions:")
         print("1. Add obstacle")
         print("2. Remove obstacle")
