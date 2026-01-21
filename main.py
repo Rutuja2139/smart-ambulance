@@ -77,7 +77,7 @@ def main():
             print(f"Total Obstacles      : {sum(row.count(1) for row in grid)}")
             print(f"Timestamp            : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             print("="*45)
-            print("✅ Simulation Ended Successfully")
+            print(" Simulation Ended Successfully")
             break
 
         time.sleep(1)
