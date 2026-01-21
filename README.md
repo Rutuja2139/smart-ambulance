@@ -1,27 +1,24 @@
-A real-time pathfinding simulator where multiple NPCs navigate a dynamic grid-based city. Environmental factors and obstacles influence their movement, demonstrating A* algorithm pathfinding with a Euclidean heuristic.
+# Smart Ambulance A* Simulator (Dynamic Edition)
 
---Features--
+A real-time pathfinding simulator where an ambulance navigates a dynamic, grid-based city. Environmental factors and obstacles influence movement, demonstrating A* algorithm pathfinding with a Euclidean heuristic.
 
-Multi-NPC simulation: Ambulance and doctor NPCs move independently.
+# Features
 
-Dynamic grid: Add or remove obstacles; weather and temperature affect movement.
+- **Dynamic Ambulance Simulation:** The ambulance NPC finds the optimal path to the hospital in real-time.  
+- **Dynamic Grid:** Add or remove obstacles on-the-fly. Weather conditions affect movement cost.  
+- **Visual Representation:** Real-time paths displayed with clear markers:
+  - `A` = Ambulance
+  - `H` = Hospital
+  - `D` = Doctor
+  - `P` = Police
+  - `*` = Path  
+- Modular Design: Easily extendable for additional NPCs or rules.
 
-Visual representation: Real-time paths for all NPCs with clear markers (A, D, H).
+# How to Run
 
-Modular Python design: Easily extendable for more NPCs or rules.
+1. Clone the repository.  
+2. Install Python 3.8+ if not installed.  
+3. Run the main simulation:
 
---How to Run--
+```bash
 python main.py
-
-
-Enter grid size, ambulance start, weather, and temperature.
-
-Watch NPCs navigate dynamically and interactively modify the grid.
-
---Technical Highlights--
-
-A* pathfinding with Euclidean heuristic for admissible, optimal paths.
-
-Environmental modeling affecting movement cost.
-
-Real-time, interactive simulation for algorithm demonstration.
